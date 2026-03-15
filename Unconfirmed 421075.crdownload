@@ -1,0 +1,88 @@
+/* ============================================================
+   ROYAL ROOTS — JavaScript
+   ============================================================ */
+
+// Mobile menu toggle
+const menuToggle = document.getElementById('menuToggle');
+const mobileNav = document.getElementById('mobileNav');
+
+if (menuToggle && mobileNav) {
+  menuToggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+  });
+
+  // Close menu on link click
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+    });
+  });
+}
+
+// Gallery filter (for gallery.html)
+const filterButtons = document.querySelectorAll('.filter-btn');
+const galleryItems = document.querySelectorAll('.gallery-item');
+
+filterButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterButtons.forEach(b => {
+      b.classList.remove('btn-primary');
+      b.classList.add('btn-outline');
+    });
+    btn.classList.remove('btn-outline');
+    btn.classList.add('btn-primary');
+
+    const category = btn.dataset.category;
+    galleryItems.forEach(item => {
+      if (category === 'All' || item.dataset.category === category) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+});
+
+// Lightbox
+const lightboxOverlay = document.getElementById('lightbox');
+const lightboxLabel = document.getElementById('lightboxLabel');
+const lightboxClose = document.getElementById('lightboxClose');
+
+if (lightboxOverlay) {
+  galleryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      if (lightboxLabel) lightboxLabel.textContent = item.dataset.label || 'Photo';
+      lightboxOverlay.classList.add('open');
+    });
+  });
+
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', () => lightboxOverlay.classList.remove('open'));
+  }
+  lightboxOverlay.addEventListener('click', (e) => {
+    if (e.target === lightboxOverlay) lightboxOverlay.classList.remove('open');
+  });
+}
+
+// Contact form submission
+const contactForm = document.getElementById('contactForm');
+const formContainer = document.getElementById('formContainer');
+const successCard = document.getElementById('successCard');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (formContainer) formContainer.style.display = 'none';
+    if (successCard) successCard.style.display = 'block';
+  });
+}
+
+// "Submit Another" button
+const resetFormBtn = document.getElementById('resetForm');
+if (resetFormBtn) {
+  resetFormBtn.addEventListener('click', () => {
+    if (formContainer) formContainer.style.display = 'block';
+    if (successCard) successCard.style.display = 'none';
+    if (contactForm) contactForm.reset();
+  });
+}
